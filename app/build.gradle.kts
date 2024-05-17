@@ -19,7 +19,12 @@ android {
             useSupportLibrary = true
         }
     }
-
+    signingConfigs {
+        create("release") {
+            storeFile = file("C:\\Users\\Sohrab\\AndroidStudioProjects\\SuperApp\\SuperAppUpToDate\\release-key.jks")
+            keyAlias = "release"
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = false

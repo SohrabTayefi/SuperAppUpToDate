@@ -1,22 +1,10 @@
 package superapp.libook.xyz
 
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,22 +13,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import superapp.libook.xyz.Tools.SiteBoxComponent
+import superapp.libook.xyz.Tools.WebViewComponent
 import superapp.libook.xyz.ui.theme.SuperAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,79 +47,108 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SuperAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                ) {
+                    MyApp()
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
     val navController = rememberNavController()
+    val scope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = {
-            AppBar(
-                onMenuClick = {
+    Scaffold(topBar = {
+        val currentDestination by navController.currentBackStackEntryAsState()
+        TopAppBar(modifier = Modifier.fillMaxWidth(), colors = topAppBarColors(
+            containerColor = Color(0xD5E0E1EB),
+            titleContentColor = Color.Black,
+        ), navigationIcon = {
+            // Get the current destination
+            if (currentDestination?.destination?.route != "home") {
+                Button( onClick = {
                     scope.launch {
-                        drawerState.open()
+                        navController.navigateUp()
                     }
+                }) {
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        text = "Back To Main"
+                    )
                 }
-            )
-        },
-        drawerContent = {
-            DrawerContent(navController)
-        },
-        drawerState = drawerState
-    ) { paddingValues ->
+            }
+        }, title = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                if (currentDestination?.destination?.route != "home") {
+                    Text(
+                        "Super App",
+                        modifier = Modifier.align(Alignment.CenterStart).padding(start = 37.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }else
+                    Text(
+                        "Super App",
+                        modifier = Modifier.align(Alignment.Center),
+                        textAlign = TextAlign.Center
+                    )
+
+            }
+        })
+    }) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = "home",
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(innerPadding)
         ) {
-            composable("home") { HomeScreen() }
-            composable("feature1") { FeatureScreen(featureName = "Feature 1") }
-            composable("feature2") { FeatureScreen(featureName = "Feature 2") }
-            composable("feature3") { FeatureScreen(featureName = "Feature 3") }
+            composable("home") { FeatureGrid(navController) }
+            composable("site1") { WebViewComponent(url = "http://Ck.libook.xyz ") }
+            composable("site2") { WebViewComponent(url = "http://ck.libook.xyz/Nursing") }
+            composable("site3") { WebViewComponent(url = "http://ck.libook.xyz/pharmacology") }
+            composable("site4") { WebViewComponent(url = "https://ck.liboox.xyz/student") }
+            composable("site5") { WebViewComponent(url = "http://exp.libook.xyz  ") }
+            composable("site6") { WebViewComponent(url = "https://mrdx.libook.xyz/login") }
+            composable("site7") { WebViewComponent(url = "https://Ovidpack1.libook.xyz/login") }
+            composable("site8") { WebViewComponent(url = "https://Ovidpack2.libook.xyz/login") }
+            composable("site9") { WebViewComponent(url = "https://Ovidpack3.libook.xyz/login") }
+            composable("site10") { WebViewComponent(url = "http://pepid.libook.xyz ") }
+            composable("site11") { WebViewComponent(url = "http://proquest.libook.xyz ") }
+            composable("site12") { WebViewComponent(url = "https://sanfordguide.libook.xyz") }
+            composable("site13") { WebViewComponent(url = "http://sp.libook.xyz ") }
+            composable("site14") { WebViewComponent(url = "http://statdx.libook.xyz ") }
+            composable("site15") { WebViewComponent(url = "http://upd.libook.xyz") }
+            composable("site16") { WebViewComponent(url = "https://Pathways.libook.xyz") }
+            composable("site17") { WebViewComponent(url = "https://lexi.libook.xyz") }
+            composable("site18") { WebViewComponent(url = "https://wos.libook.xyz") }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    WebViewComponent(url = "https://pathways.libook.xyz")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SuperAppTheme {
-        FeatureGrid()
-    }
-}
 
 @Composable
-fun FeatureGrid() {
+fun FeatureGrid(navController: NavController) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
         modifier = Modifier.fillMaxSize(),
     ) {
         items(18) { index ->
-            FeatureTile(index)
+            FeatureTile(index, navController)
         }
     }
 }
 
 @Composable
-fun FeatureTile(index: Int) {
+fun FeatureTile(index: Int, navController: NavController) {
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -129,171 +156,86 @@ fun FeatureTile(index: Int) {
             .aspectRatio(1f), // To make the tile square
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(text = "Feature ${index + 1}")
-        }
-    }
-}
-
-@Composable
-fun WebViewComponent(url: String) {
-    val context = LocalContext.current
-    val webView = remember { WebView(context) }
-
-    AndroidView(modifier = Modifier.fillMaxSize(), factory = {
-        webView.apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            webViewClient = WebViewClient()
-            loadUrl(url)
-            clearCache(true)
-            clearHistory()
-            settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-            settings.javaScriptEnabled = true
-            settings.domStorageEnabled = true
-            settings.loadsImagesAutomatically = true
-            settings.allowContentAccess = true
-            settings.setSupportMultipleWindows(true)
-            settings.setSupportZoom(true)
-            settings.builtInZoomControls = true
-            settings.displayZoomControls = false
-            isHorizontalScrollBarEnabled = true
-            isVerticalScrollBarEnabled = true
-            scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-            webViewClient = object : WebViewClient() {
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    if (url.equals("https://pathways.libook.xyz/contents/search"))
-                        view?.loadUrl(
-                            "javascript:var container = document.getElementById('loginRegisterButtons');" +
-                                    "if(container) container.parentNode.removeChild(container);"
-                        )
-                    super.onPageStarted(view, url, favicon)
+        Box(contentAlignment = Alignment.Center, modifier = Modifier
+            .fillMaxSize()
+            .clickable {
+                navController.navigate("site${index + 1}")
+            }) {
+            when (index) {
+                0 -> {
+                    SiteBoxComponent(R.drawable.clinicalkey, "clinicalkey")
                 }
 
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    view?.loadUrl(
-                        "javascript:var container = document.getElementById('loginRegisterButtons');" +
-                                "container.parentNode.removeChild(container);"
-                    )
+                1 -> {
+                    SiteBoxComponent(R.drawable.clinicalkey, "clinicalkey Nursing")
                 }
 
-                @Deprecated("Deprecated in Java")
-                override fun onReceivedError(
-                    view: WebView?, errorCode: Int, description: String?, failingUrl: String?
-                ) {
-                    Toast.makeText(context, description, Toast.LENGTH_SHORT).show()
+                2 -> {
+                    SiteBoxComponent(R.drawable.clinicalkey, "clinicalkey pharmacology")
                 }
 
-                override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
-                ): Boolean {
-//                    view?.loadUrl("javascript:var container = document.getElementById('loginRegisterButtons');" +
-//                            "if(container) container.parentNode.removeChild(container);")
-                    // Implement custom logic to determine whether to load from cache or network
-                    return super.shouldOverrideUrlLoading(view, request)
+                3 -> {
+                    SiteBoxComponent(R.drawable.clinicalkey, "clinicalkey Student")
                 }
 
-                override fun shouldInterceptRequest(
-                    view: WebView?,
-                    request: WebResourceRequest?
-                ): WebResourceResponse? {
-                    val headers = HashMap<String, String>()
-                    headers["X-Forwarded-For"] = "141.211.4.224"
-                    request?.requestHeaders?.forEach {
-                        headers[it.key] = it.value
-                    }
-                    val modifiedRequest = object : WebResourceRequest {
-                        override fun getUrl(): Uri? {
-                            return request?.url
-                        }
-
-                        override fun isForMainFrame(): Boolean {
-                            return request?.isForMainFrame ?: false
-                        }
-
-                        @RequiresApi(Build.VERSION_CODES.N)
-                        override fun isRedirect(): Boolean {
-                            return request?.isRedirect ?: false
-                        }
-
-                        override fun hasGesture(): Boolean {
-                            return request?.hasGesture() ?: false
-                        }
-
-                        override fun getMethod(): String? {
-                            return request?.method
-                        }
-
-                        override fun getRequestHeaders(): MutableMap<String, String>? {
-                            return headers
-                        }
-                    }
-                    return super.shouldInterceptRequest(view, modifiedRequest)
+                4 -> {
+                    SiteBoxComponent(R.drawable.clinicalkey, "Expertpath")
                 }
 
+                5 -> {
+                    SiteBoxComponent(R.drawable.merative_micromedex, "Merative Micromedex")
+                }
+
+                6 -> {
+                    SiteBoxComponent(R.drawable.ovid_journals, "Ovid Journals 01")
+                }
+
+                7 -> {
+                    SiteBoxComponent(R.drawable.ovid_journals, "Ovid Journals 02")
+                }
+
+                8 -> {
+                    SiteBoxComponent(R.drawable.ovid_journals, "Ovid Journals 03")
+                }
+
+                9 -> {
+                    SiteBoxComponent(R.drawable.pepid, "PEPID")
+                }
+
+                10 -> {
+                    SiteBoxComponent(R.drawable.proquest, "Proquest Theses and Dissertations")
+                }
+
+                11 -> {
+                    SiteBoxComponent(R.drawable.sanford_guide, "Sanford Guide")
+                }
+
+                12 -> {
+                    SiteBoxComponent(R.drawable.springer_link, "SpringerLink")
+                }
+
+                13 -> {
+                    SiteBoxComponent(R.drawable.statdx, "StatDX")
+                }
+
+                14 -> {
+                    SiteBoxComponent(R.drawable.uptodate, "Uptodate")
+                }
+
+                15 -> {
+                    SiteBoxComponent(R.drawable.uptodate, "Uptodate Pathways")
+                }
+
+                16 -> {
+                    SiteBoxComponent(R.drawable.uptodate_lexidrug, "Uptodate LexiDrug (Lexicomp)")
+                }
+
+                17 -> {
+                    SiteBoxComponent(R.drawable.web_of_science, "Web Of Science")
+                }
 
             }
-            val css = """
-                <style>
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-                    th, td {
-                        padding: 8px;
-                        text-align: left;
-                        border-bottom: 1px solid #ddd;
-                    }
-                    th {
-                        background-color: #f2f2f2;
-                    }
-                    @media screen and (max-width: 600px) {
-                        table, thead, tbody, th, td, tr {
-                            display: block;
-                        }
-                        th {
-                            display: none;
-                        }
-                        td {
-                            border: none;
-                            border-bottom: 1px solid #ddd;
-                            position: relative;
-                            padding-left: 50%;
-                        }
-                        td:before {
-                            position: absolute;
-                            top: 6px;
-                            left: 6px;
-                            width: 45%;
-                            padding-right: 10px;
-                            white-space: nowrap;
-                        }
-                    }
-                </style>
-            """.trimIndent()
-
-            // Inject the CSS into the WebView
-            val js = "javascript:var container = document.getElementById('loginRegisterButtons');" +
-                    "if(container) container.parentNode.removeChild(container);"
-            val javascript =
-                "$js + javascript:document.getElementsByTagName('head')[0].innerHTML += '$css';"
-            loadUrl(javascript)
-        }
-    })
-
-    // Handle back button press
-    BackHandler {
-        // Check if the WebView can go back
-        if (webView.canGoBack()) {
-            webView.goBack() // Go back to previous page
-        } else {
-            // Let the system handle the back button
         }
     }
 }
+
