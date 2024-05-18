@@ -111,24 +111,24 @@ fun MyApp() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home") { FeatureGrid(navController) }
-            composable("site1") { WebViewComponent(url = "http://Ck.libook.xyz ") }
-            composable("site2") { WebViewComponent(url = "http://ck.libook.xyz/Nursing") }
-            composable("site3") { WebViewComponent(url = "http://ck.libook.xyz/pharmacology") }
-            composable("site4") { WebViewComponent(url = "https://ck.liboox.xyz/student") }
-            composable("site5") { WebViewComponent(url = "http://exp.libook.xyz  ") }
-            composable("site6") { WebViewComponent(url = "https://mrdx.libook.xyz/login") }
-            composable("site7") { WebViewComponent(url = "https://Ovidpack1.libook.xyz/login") }
-            composable("site8") { WebViewComponent(url = "https://Ovidpack2.libook.xyz/login") }
-            composable("site9") { WebViewComponent(url = "https://Ovidpack3.libook.xyz/login") }
-            composable("site10") { WebViewComponent(url = "http://pepid.libook.xyz ") }
-            composable("site11") { WebViewComponent(url = "http://proquest.libook.xyz ") }
-            composable("site12") { WebViewComponent(url = "https://sanfordguide.libook.xyz") }
-            composable("site13") { WebViewComponent(url = "http://sp.libook.xyz ") }
-            composable("site14") { WebViewComponent(url = "http://statdx.libook.xyz ") }
-            composable("site15") { WebViewComponent(url = "http://upd.libook.xyz") }
-            composable("site16") { WebViewComponent(url = "https://Pathways.libook.xyz") }
-            composable("site17") { WebViewComponent(url = "https://lexi.libook.xyz") }
-            composable("site18") { WebViewComponent(url = "https://wos.libook.xyz") }
+            composable("site1") { WebViewComponent(url = "") }
+            composable("site2") { WebViewComponent(url = "") }
+            composable("site3") { WebViewComponent(url = "") }
+            composable("site4") { WebViewComponent(url = "") }
+            composable("site5") { WebViewComponent(url = "") }
+            composable("site6") { WebViewComponent(url = "") }
+            composable("site7") { WebViewComponent(url = "") }
+            composable("site8") { WebViewComponent(url = "") }
+            composable("site9") { WebViewComponent(url = "") }
+            composable("site10") { WebViewComponent(url = "") }
+            composable("site11") { WebViewComponent(url = "") }
+            composable("site12") { WebViewComponent(url = "") }
+            composable("site13") { WebViewComponent(url = "") }
+            composable("site14") { WebViewComponent(url = "") }
+            composable("site15") { WebViewComponent(url = "") }
+            composable("site16") { WebViewComponent(url = "") }
+            composable("site17") { WebViewComponent(url = "") }
+            composable("site18") { WebViewComponent(url = "") }
         }
     }
 }
